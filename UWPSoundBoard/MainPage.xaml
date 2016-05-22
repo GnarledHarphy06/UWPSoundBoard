@@ -26,6 +26,7 @@
 
             <Button Name="BackButton" 
                     RelativePanel.RightOf="HamburgerButton"
+                    Visibility="Collapsed"
                     Click="BackButton_Click"
                     FontFamily="Segoe MDL2 Assets"
                     FontSize="20"
@@ -33,7 +34,8 @@
                     Width="45"                    
                     Content="&#xE0A6;"
                     />
-            <AutoSuggestBox Name="SearchAutoSuggestBox" 
+            <AutoSuggestBox Name="SearchAutoSuggestBox"
+                            RelativePanel.AlignVerticalCenterWithPanel="True"
                             PlaceholderText="Search for sounds"
                             Width="200"
                             QueryIcon="Find"
@@ -55,8 +57,9 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="data:MenuItem">
                             <StackPanel Orientation="Horizontal">
-                                <Image Height="45"
-                                       Width="45"
+                                <Image Height="35"
+                                       Width="35"
+                                       Margin="-10,10,0,10"
                                        Stretch="UniformToFill"
                                        Source="{x:Bind IconFile}"/>
                                 <TextBlock FontSize="18"
@@ -69,7 +72,7 @@
                 </ListView>
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid>
+                <Grid Margin="10,0,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />

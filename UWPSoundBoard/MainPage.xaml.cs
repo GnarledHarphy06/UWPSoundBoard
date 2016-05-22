@@ -48,7 +48,10 @@ namespace UWPSoundBoard
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-
+            SoundManager.GetAllSounds(Sounds);
+            MenuItemsListView.SelectedItem = null;
+            BackButton.Visibility = Visibility.Collapsed;
+            CategoryTextBlock.Text = "All Sounds";
         }
 
         private void SearchAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -63,12 +66,16 @@ namespace UWPSoundBoard
 
         private void MenuItemsListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            // get rid of temporary menuItem var
+            CategoryTextBlock.Text = ((MenuItem)e.ClickedItem).Category.ToString();
+            SoundManager.GetSoundsByCategory(Sounds, ((MenuItem)e.ClickedItem).Category);
+            BackButton.Visibility = Visibility.Visible;
         }
 
         private void SoundGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            // var sound = (Sound)e.ClickedItem; skipped this part :v
+            MyMediaElement.Source = new Uri(this.BaseUri, ((Sound)e.ClickedItem).AudioFile);
         }
     }
 }
