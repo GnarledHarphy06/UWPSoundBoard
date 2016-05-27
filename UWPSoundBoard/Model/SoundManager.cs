@@ -20,9 +20,18 @@ namespace UWPSoundBoard.Model
         public static void GetSoundsByCategory(ObservableCollection<Sound> sounds, SoundCategory category)
         {
             // some changes here by Giovan
-            // get rid of allsounds and  filteredsounds var
+            // get rid of allsounds var
             sounds.Clear();
-            getSounds().Where(p => p.Category == category).ToList().ForEach(p => sounds.Add(p));
+            var filteredSounds = getSounds().Where(p => p.Category == category).ToList();
+            filteredSounds.ForEach(p => sounds.Add(p));
+        }
+
+        public static void GetSoundsByName(ObservableCollection<Sound> sounds, string name)
+        {
+            // made some changes here too
+            sounds.Clear();
+            var filteredSounds = getSounds().Where(p => p.Name == name).ToList();
+            filteredSounds.ForEach(p => sounds.Add(p));
         }
 
         private static List<Sound> getSounds()

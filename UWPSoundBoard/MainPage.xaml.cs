@@ -27,7 +27,7 @@ namespace UWPSoundBoard
     public sealed partial class MainPage : Page
     {
         private ObservableCollection<Sound> Sounds;
-
+        private List<String> Suggestion;
         private List<MenuItem> MenuItems;
 
         public MainPage()
@@ -54,20 +54,27 @@ namespace UWPSoundBoard
             MenuItemsListView.SelectedItem = null;
             BackButton.Visibility = Visibility.Collapsed;
             CategoryTextBlock.Text = "All Sounds";
+            SearchAutoSuggestBox.Text = "";
         }
 
         private void SearchAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            // removing the temporary variables
-            /* SearchAutoSuggestBox.ItemsSource = Sounds
-                .Where(p => p.Name.StartsWith(((AutoSuggestBox)sender).Text))
-                .ToList();
-            */
+            var _Sounds = new ObservableCollection<Sound>();
+            SoundManager.GetAllSounds(_Sounds);
+            // for now it works, but still too repetitive if it has to make a new _Sounds every TextChanged
+
+            Suggestion = _Sounds.Where(p => p.Name.StartsWith(sender.Text)).Select(p => p.Name).ToList();
+            // made ItemSource check
+            if (SearchAutoSuggestBox.ItemsSource == null)
+                SearchAutoSuggestBox.ItemsSource = Suggestion;
         }
 
         private void SearchAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-
+            SoundManager.GetSoundsByName(Sounds, sender.Text);
+            CategoryTextBlock.Text = $"Search {sender.Text}";
+            MenuItemsListView.SelectedItem = null;
+            BackButton.Visibility = Visibility.Visible;
         }
 
         private void MenuItemsListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -76,6 +83,8 @@ namespace UWPSoundBoard
             CategoryTextBlock.Text = ((MenuItem)e.ClickedItem).Category.ToString();
             SoundManager.GetSoundsByCategory(Sounds, ((MenuItem)e.ClickedItem).Category);
             BackButton.Visibility = Visibility.Visible;
+            if (SearchAutoSuggestBox.Text != null)
+                SearchAutoSuggestBox.Text = "";
         }
 
         private void SoundGridView_ItemClick(object sender, ItemClickEventArgs e)
