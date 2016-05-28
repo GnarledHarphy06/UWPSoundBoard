@@ -38,6 +38,7 @@
                             RelativePanel.AlignVerticalCenterWithPanel="True"
                             PlaceholderText="Search for sounds"
                             Width="200"
+                            Margin="0,0,10,0"
                             QueryIcon="Find"
                             TextChanged="SearchAutoSuggestBox_TextChanged"
                             QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted"
